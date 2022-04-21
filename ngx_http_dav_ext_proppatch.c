@@ -254,6 +254,8 @@ ngx_http_dav_ext_proppatch_create_propstats(ngx_http_request_t *r,
     static u_char tail[] =
         "</D:response>";
 
+    unsigned int i;
+
     ngx_int_t size = ngx_strlen(multi_head)
                 + ngx_strlen(multi_head)
                 + ngx_strlen(multi_head_end)
@@ -264,7 +266,7 @@ ngx_http_dav_ext_proppatch_create_propstats(ngx_http_request_t *r,
                 + ngx_strlen(multi_tail)
                 + 1;
 
-   for (unsigned int i = 0; i< namespaces->nelts; i++) {
+   for (i = 0; i< namespaces->nelts; i++) {
      ngx_http_dav_ext_propatch_namespace_t *nsp = &namesps[i];
      size += ngx_strlen(xlmns)
            + ngx_strlen(nsp->prefix)
@@ -273,7 +275,7 @@ ngx_http_dav_ext_proppatch_create_propstats(ngx_http_request_t *r,
            + ngx_strlen(xmlns_end);
    }
 
-   for (unsigned int i = 0; i< properties->nelts; i++) {
+   for (i = 0; i< properties->nelts; i++) {
      ngx_http_dav_ext_propatch_property_t *prop = &props[i];
      size += ngx_strlen(propstat)
            + ngx_strlen(prop->prefix)
@@ -286,7 +288,7 @@ ngx_http_dav_ext_proppatch_create_propstats(ngx_http_request_t *r,
    void* dst = buffer;
 
    dst = ngx_copy(dst,multi_head, ngx_strlen(multi_head));
-   for (unsigned int i = 0; i< namespaces->nelts; i++) {
+   for (i = 0; i< namespaces->nelts; i++) {
      ngx_http_dav_ext_propatch_namespace_t *nsp = &namesps[i];
      dst = ngx_copy(dst, xlmns, ngx_strlen(xlmns));
      dst = ngx_copy(dst, nsp->prefix, ngx_strlen(nsp->prefix));
@@ -300,7 +302,7 @@ ngx_http_dav_ext_proppatch_create_propstats(ngx_http_request_t *r,
    dst = ngx_copy(dst,r->uri.data, r->uri.len);
    dst = ngx_copy(dst,head_end, ngx_strlen(head_end));
 
-   for (unsigned int i = 0 ; i < properties->nelts; i++) {
+   for (i = 0 ; i < properties->nelts; i++) {
      ngx_http_dav_ext_propatch_property_t *prop = &props[i];
      dst = ngx_copy(dst,propstat, ngx_strlen(propstat));
      dst = ngx_copy(dst,prop->prefix, ngx_strlen(prop->prefix));
